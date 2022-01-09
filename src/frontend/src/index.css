@@ -16,3 +16,7 @@ code {
   background-repeat: repeat-x;
   background-image: url("./barbedWire.png");
 }
+
+.content-container {
+  width: 60% !important;
+}

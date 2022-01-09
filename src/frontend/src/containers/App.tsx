@@ -68,46 +68,51 @@ function App() {
     return (
         <div className="mb-3">
             <NavigationBar/>
-            <div className="container-lg">
-                <FileUploadCard onFileChange={onFileChange} onFileUpload={onFileUpload}/>
-                <div className="mt-2" style={{minHeight: "60vh"}}>
-                    <Row>
-                        {(pendingApiCall || (!pendingApiCall && !uploadedImageUrl) || error) &&
-                        <Col className="col-12 d-flex flex-wrap align-items-center" style={{minHeight: "56vh"}}>
-                            {pendingApiCall && !error && <div className="text-center mx-auto"><Spinner>
-                                Loading...
-                            </Spinner></div>}
-                            {!pendingApiCall && !uploadedImageUrl && !error &&
-                            <div className="text-muted text-center mx-auto">
-                                Here you will see the predictions
-                            </div>}
-                            {error && <div className="text-danger text-center mx-auto">
-                                {error}
-                            </div>}
-                        </Col>}
+            <div className="d-flex justify-content-center">
+                <div className="content-container">
+                    <FileUploadCard onFileChange={onFileChange} onFileUpload={onFileUpload}/>
+                    <div className="mt-2" style={{minHeight: "60vh"}}>
+                        <Row>
+                            {(pendingApiCall || (!pendingApiCall && !uploadedImageUrl) || error) &&
+                            <Col className="col-12 d-flex flex-wrap align-items-center" style={{minHeight: "56vh"}}>
+                                {pendingApiCall && !error && <div className="text-center mx-auto"><Spinner>
+                                    Loading...
+                                </Spinner></div>}
+                                {!pendingApiCall && !uploadedImageUrl && !error &&
+                                <div className="text-muted text-center mx-auto">
+                                    Here you will see the predictions
+                                </div>}
+                                {error && <div className="text-danger text-center mx-auto">
+                                    {error}
+                                </div>}
+                            </Col>}
 
-                        <Col className="align-self-center mb-3">
-                            {predictions.length > 0 && <h4><p>Predictions:</p></h4>}
-                            {predictions.map(p => (
-                                p.probability > minProbability && (<div key={p.probability}>
-                                    {p.tagName === "1zl" && <div className="text-success">Found: {p.tagName.replace("zl", "")} zł</div>}
-                                    {p.tagName === "2zl" && <div className="text-danger">Found: {p.tagName.replace("zl", "")} zł</div>}
-                                    {p.tagName === "5zl" && <div className="text-primary">Found: {p.tagName.replace("zl", "")} zł</div>}
-                                </div>)
-                            ))}
-                            {predictions.length > 0 &&
-                            <div className="mt-2">
-                                <h5>Sum: {predictions.filter(a => a.probability > minProbability).reduce((sum, {tagName}: { tagName: string }) => sum + parseFloat(tagName), 0)} zł</h5>
-                            </div>}
-                        </Col>
-                        {(uploadedImageUrl && predictions.length > 0) && <Row>
-                            <Col style={{minHeight: "56vh"}}>
-                                {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
-                                <Canvas uploadedImageUrl={uploadedImageUrl} predictions={predictions} width="700"
-                                        height="700" minProbability={minProbability}/>
+                            <Col className="align-self-center mb-3">
+                                {predictions.length > 0 && <h4><p>Predictions:</p></h4>}
+                                {predictions.map(p => (
+                                    p.probability > minProbability && (<div key={p.probability}>
+                                        {p.tagName === "1zl" &&
+                                        <div className="text-success">Found: {p.tagName.replace("zl", "")} zł</div>}
+                                        {p.tagName === "2zl" &&
+                                        <div className="text-danger">Found: {p.tagName.replace("zl", "")} zł</div>}
+                                        {p.tagName === "5zl" &&
+                                        <div className="text-primary">Found: {p.tagName.replace("zl", "")} zł</div>}
+                                    </div>)
+                                ))}
+                                {predictions.length > 0 &&
+                                <div className="mt-2">
+                                    <h5>Sum: {predictions.filter(a => a.probability > minProbability).reduce((sum, {tagName}: { tagName: string }) => sum + parseFloat(tagName), 0)} zł</h5>
+                                </div>}
                             </Col>
-                        </Row>}
-                    </Row>
+                            {(uploadedImageUrl && predictions.length > 0) && <Row>
+                                <Col style={{minHeight: "56vh"}}>
+                                    {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
+                                    <Canvas uploadedImageUrl={uploadedImageUrl} predictions={predictions} width="700"
+                                            height="700" minProbability={minProbability}/>
+                                </Col>
+                            </Row>}
+                        </Row>
+                    </div>
                 </div>
             </div>
         </div>
