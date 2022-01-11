@@ -3,18 +3,20 @@ import {useState} from 'react'
 import NavigationBar from "../components/NavigationBar";
 import {uploadImageToStorage} from "../api/azure_storage_api/azureStorageApiCalls";
 import {getPredictions, Prediction} from "../api/custom_vision_api/customVisionApiCalls";
-import {Col, Row, Spinner} from "reactstrap";
+import {Col, Input, Row, Spinner} from "reactstrap";
 import {FileUploadCard} from "../components/FileUploadCard";
 import Canvas from "../components/Canvas";
 
-export const minProbability = 0.88;
 
 function App() {
     const [selectedFile, setSelectedFile] = useState(null);
     const [pendingApiCall, setPendingApiCall] = useState<boolean>(false);
     const [predictions, setPredictions] = useState<Prediction[]>([]);
     const [uploadedImageUrl, setUploadedImageUrl] = useState<string>('');
-    const [error, setError] = useState<string>('')
+    const [error, setError] = useState<string>('');
+    const [threshold, setThreshold] = useState<number>(50);
+
+    let minProbability = threshold / 100;
 
     const onFileChange = (event: any) => {
         setError('');
@@ -58,6 +60,7 @@ function App() {
             }).then(response => {
             setPendingApiCall(false);
             setPredictions(response.data.predictions);
+            console.log(response.data.predictions)
         }).catch(error => {
             setPendingApiCall(false);
             setError('Invalid image content!')
@@ -71,6 +74,17 @@ function App() {
             <div className="d-flex justify-content-center">
                 <div className="content-container">
                     <FileUploadCard onFileChange={onFileChange} onFileUpload={onFileUpload}/>
+                    <Col className="ms-2">
+                        <Row className="d-flex justify-content-center">
+                            <Col md="9" >
+                                <div className="text-center">
+                                    Threshold: {threshold} %
+                                </div>
+                                <Input type="range" className="form-range" id="customRange1" min="1" max="100" step="1"
+                                       defaultValue="50" onChange={(ev) => setThreshold(parseInt(ev.target.value))}/>
+                            </Col>
+                        </Row>
+                    </Col>
                     <div className="mt-2" style={{minHeight: "60vh"}}>
                         <Row>
                             {(pendingApiCall || (!pendingApiCall && !uploadedImageUrl) || error) &&
@@ -88,20 +102,14 @@ function App() {
                             </Col>}
 
                             <Col className="align-self-center mb-3">
-                                {predictions.length > 0 && <h4><p>Predictions:</p></h4>}
-                                {predictions.map(p => (
-                                    p.probability > minProbability && (<div key={p.probability}>
-                                        {p.tagName === "1zl" &&
-                                        <div className="text-success">Found: {p.tagName.replace("zl", "")} zł</div>}
-                                        {p.tagName === "2zl" &&
-                                        <div className="text-danger">Found: {p.tagName.replace("zl", "")} zł</div>}
-                                        {p.tagName === "5zl" &&
-                                        <div className="text-primary">Found: {p.tagName.replace("zl", "")} zł</div>}
-                                    </div>)
-                                ))}
-                                {predictions.length > 0 &&
-                                <div className="mt-2">
-                                    <h5>Sum: {predictions.filter(a => a.probability > minProbability).reduce((sum, {tagName}: { tagName: string }) => sum + parseFloat(tagName), 0)} zł</h5>
+                                {predictions.length > 0 && <div>
+                                    <h4><p>Predictions:</p></h4>
+                                    <li className="text-success">Human
+                                        found {predictions.filter(p => p.tagName === 'Human' && p.probability > minProbability).length} times
+                                    </li>
+                                    <li className="text-danger">Dog
+                                        found {predictions.filter(p => p.tagName === 'Dog' && p.probability > minProbability).length} times
+                                    </li>
                                 </div>}
                             </Col>
                             {(uploadedImageUrl && predictions.length > 0) && <Row>

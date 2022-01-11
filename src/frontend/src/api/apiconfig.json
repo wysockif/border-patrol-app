@@ -1,11 +1,11 @@
 {
   "CustomVisionAPI": {
-    "Url": "URL",
-    "PredictionKey": "PREDICTION_KEY"
+    "Url": "https://northeurope.api.cognitive.microsoft.com/customvision/v3.0/Prediction/b7a1faad-1ff9-4d58-932a-b9efc4d842b1/detect/iterations/BorderPatrolAppPub/url",
+    "PredictionKey": "cf2a3932585044c49bafc6c8ba5188c9"
   },
   "AzureStorageApi": {
-    "SasToken" : "SAS_TOKEN",
-    "ContainerName" : "CONTAINER_NAME",
-    "StorageAccountName" : "STORAGE_ACCOUNT_NAME"
+    "SasToken" : "sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2022-03-11T19:46:20Z&st=2022-01-11T11:46:20Z&spr=https,http&sig=2az3mJrDNvviy2FtRb9zJPLb012aRguh8wmTr%2BuYlW4%3D",
+    "ContainerName" : "bpacontainer",
+    "StorageAccountName" : "bpastorageaccount"
   }
 }
