@@ -30,9 +30,9 @@ const Canvas = (props: any) => {
                         let height = (p.boundingBox.height * img.height) * l;
 
                         if (p.tagName === "Human"){
-                            context.strokeStyle = "green"
-                        } else if (p.tagName === "Dog"){
                             context.strokeStyle = "red"
+                        } else if (p.tagName === "Dog"){
+                            context.strokeStyle = "blue"
                         }
                         context.beginPath()
                         context.rect(x, y, width, height)

@@ -104,10 +104,10 @@ function App() {
                             <Col className="align-self-center mb-3">
                                 {predictions.length > 0 && <div>
                                     <h4><p>Predictions:</p></h4>
-                                    <li className="text-success">Human
+                                    <li className="text-danger">Human
                                         found {predictions.filter(p => p.tagName === 'Human' && p.probability > minProbability).length} times
                                     </li>
-                                    <li className="text-danger">Dog
+                                    <li className="text-primary">Dog
                                         found {predictions.filter(p => p.tagName === 'Dog' && p.probability > minProbability).length} times
                                     </li>
                                 </div>}
