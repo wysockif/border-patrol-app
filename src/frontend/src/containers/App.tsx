@@ -2,10 +2,11 @@ import * as React from 'react'
 import {useState} from 'react'
 import NavigationBar from "../components/NavigationBar";
 import {uploadImageToStorage} from "../api/azure_storage_api/azureStorageApiCalls";
-import {getPredictions, Prediction} from "../api/custom_vision_api/customVisionApiCalls";
+import {getPredictions, Prediction, sendHttpRequest} from "../api/custom_vision_api/customVisionApiCalls";
 import {Col, Input, Row, Spinner} from "reactstrap";
 import {FileUploadCard} from "../components/FileUploadCard";
 import Canvas from "../components/Canvas";
+
 
 function App() {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -49,6 +50,8 @@ function App() {
         setError('');
         setPredictionsList([]);
         setUploadedImageUrls([]);
+        setPredictionsList([]);
+        // sendHttpRequest(predictionsList);
         setPendingApiCall(true);
 
         if (!selectedFiles.length) {
@@ -106,9 +109,6 @@ function App() {
                             <Row>
                                 {(pendingApiCall || (!pendingApiCall && !uploadedImageUrls.length && !uploadedImageUrls[index].length) || error) &&
                                 <Col className="col-12 d-flex flex-wrap align-items-center" style={{minHeight: "56vh"}}>
-                                    {/*{pendingApiCall && !error && <div className="text-center mx-auto"><Spinner>*/}
-                                    {/*    Loading...*/}
-                                    {/*</Spinner></div>}*/}
                                     {!pendingApiCall && !uploadedImageUrls.length &&  !uploadedImageUrls[index].length &&!error &&
                                     <div className="text-muted text-center mx-auto">
                                         Here you will see the predictions
