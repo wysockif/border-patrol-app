@@ -70,6 +70,11 @@ function App() {
                             let predictionList = predictionsList;
                             predictionList.push(response.data.predictions);
                             setPredictionsList(predictionList);
+
+                            // if (response.data.predictions.length > 0 && response.data.predictions[0].probability > 0.7){
+                            //     sendHttpRequest(response.data.predictions[0]);
+                            // }
+
                             if (i + 1 === selectedFiles.length){
                                 setTimeout(() => {
                                     setPendingApiCall(false);
