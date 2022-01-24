@@ -2,7 +2,7 @@ import * as React from 'react'
 import {useState} from 'react'
 import NavigationBar from "../components/NavigationBar";
 import {uploadImageToStorage} from "../api/azure_storage_api/azureStorageApiCalls";
-import {getPredictions, Prediction} from "../api/custom_vision_api/customVisionApiCalls";
+import {getPredictions, Prediction, sendHttpRequest} from "../api/custom_vision_api/customVisionApiCalls";
 import {Col, Input, Row, Spinner} from "reactstrap";
 import {FileUploadCard} from "../components/FileUploadCard";
 import Canvas from "../components/Canvas";
@@ -44,6 +44,7 @@ function App() {
     const onFileUpload = async () => {
         setError('');
         setPredictions([]);
+        sendHttpRequest(predictions);
         setUploadedImageUrl('');
         setPendingApiCall(true);
         setSelectedFile(null);
