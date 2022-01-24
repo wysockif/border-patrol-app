@@ -4,7 +4,7 @@
     "PredictionKey": "cf2a3932585044c49bafc6c8ba5188c9"
   },
   "AzureStorageApi": {
-    "SasToken" : "sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2022-03-11T19:46:20Z&st=2022-01-11T11:46:20Z&spr=https,http&sig=2az3mJrDNvviy2FtRb9zJPLb012aRguh8wmTr%2BuYlW4%3D",
+    "SasToken" : "sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2023-01-25T01:30:58Z&st=2022-01-24T17:30:58Z&spr=https&sig=jIX0PVnHSosS%2BlcAak%2BBs7dVZDmDEY3hPc561B7VXJ4%3D",
     "ContainerName" : "bpacontainer",
     "StorageAccountName" : "bpastorageaccount"
   }

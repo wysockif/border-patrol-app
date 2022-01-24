@@ -8,6 +8,7 @@ export const FileUploadCard = (props: any) => (
             <div className="mb-1">
                 <InputGroup>
                     <Input
+                        multiple={true}
                         onChange={props.onFileChange}
                         id="uploadedFile"
                         name="file"

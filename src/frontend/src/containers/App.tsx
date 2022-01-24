@@ -7,12 +7,11 @@ import {Col, Input, Row, Spinner} from "reactstrap";
 import {FileUploadCard} from "../components/FileUploadCard";
 import Canvas from "../components/Canvas";
 
-
 function App() {
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [pendingApiCall, setPendingApiCall] = useState<boolean>(false);
-    const [predictions, setPredictions] = useState<Prediction[]>([]);
-    const [uploadedImageUrl, setUploadedImageUrl] = useState<string>('');
+    const [predictionsList, setPredictionsList] = useState<Prediction[][]>([]);
+    const [uploadedImageUrls, setUploadedImageUrls] = useState<string[]>([]);
     const [error, setError] = useState<string>('');
     const [threshold, setThreshold] = useState<number>(50);
 
@@ -20,52 +19,69 @@ function App() {
 
     const onFileChange = (event: any) => {
         setError('');
-        setUploadedImageUrl('')
-        setPredictions([]);
-        setSelectedFile(null);
+        setSelectedFiles([]);
+        setUploadedImageUrls([])
+        setPredictionsList([]);
+        setSelectedFiles([]);
 
         if (event.target.files[0] === undefined) {
             setError('Any file was uploaded!');
             return;
         }
 
-        const name = event.target.files[0].name;
-        const lastDot = name.lastIndexOf('.');
-        const ext = name.substring(lastDot + 1);
+        for (let i = 0; i < event.target.files.length; i++) {
+            const name = event.target.files[i].name;
+            const lastDot = name.lastIndexOf('.');
+            const ext = name.substring(lastDot + 1);
 
-        if (ext === 'png' || ext === 'jpg' || ext === 'jpeg') {
-            setSelectedFile(event.target.files[0]);
-        } else {
-            setError('Unsupported file extension!');
-            event.target.value = null;
+            if (ext === 'png' || ext === 'jpg' || ext === 'jpeg') {
+                let files: File[] = selectedFiles;
+                files.push(event.target.files[i]);
+                setSelectedFiles(files);
+            } else {
+                setError('Unsupported file extension!');
+                event.target.value = null;
+            }
         }
     };
 
     const onFileUpload = async () => {
         setError('');
-        setPredictions([]);
-        setUploadedImageUrl('');
+        setPredictionsList([]);
+        setUploadedImageUrls([]);
         setPendingApiCall(true);
-        setSelectedFile(null);
 
-        if (!selectedFile) {
+        if (!selectedFiles.length) {
             setError('Any file was uploaded!');
             return;
         }
 
-        uploadImageToStorage(selectedFile)
-            .then(url => {
-                setUploadedImageUrl(url);
-                return getPredictions(url);
-            }).then(response => {
-            setPendingApiCall(false);
-            setPredictions(response.data.predictions);
-            console.log(response.data.predictions)
-        }).catch(error => {
-            setPendingApiCall(false);
-            setError('Invalid image content!')
-            console.error(error)
-        });
+        for (let i = 0; i < selectedFiles.length; i++) {
+            uploadImageToStorage(selectedFiles[i])
+                .then(url => {
+                    return getPredictions(url)
+                        .then(response => {
+                            let urls = uploadedImageUrls;
+                            urls.push(url);
+                            setUploadedImageUrls(urls);
+                            let predictionList = predictionsList;
+                            predictionList.push(response.data.predictions);
+                            setPredictionsList(predictionList);
+                            if (i + 1 === selectedFiles.length){
+                                setTimeout(() => {
+                                    setPendingApiCall(false);
+                                    setTimeout(() => {
+                                        setSelectedFiles([]);
+                                    }, 80);
+                                }, 80);
+                            }
+                        });
+                }).catch(error => {
+                setPendingApiCall(false);
+                setError('Invalid image content!')
+                console.error(error)
+            });
+        }
     };
 
     return (
@@ -85,42 +101,44 @@ function App() {
                             </Col>
                         </Row>
                     </Col>
-                    <div className="mt-2" style={{minHeight: "60vh"}}>
-                        <Row>
-                            {(pendingApiCall || (!pendingApiCall && !uploadedImageUrl) || error) &&
-                            <Col className="col-12 d-flex flex-wrap align-items-center" style={{minHeight: "56vh"}}>
-                                {pendingApiCall && !error && <div className="text-center mx-auto"><Spinner>
-                                    Loading...
-                                </Spinner></div>}
-                                {!pendingApiCall && !uploadedImageUrl && !error &&
-                                <div className="text-muted text-center mx-auto">
-                                    Here you will see the predictions
-                                </div>}
-                                {error && <div className="text-danger text-center mx-auto">
-                                    {error}
-                                </div>}
-                            </Col>}
+                    {predictionsList.length === uploadedImageUrls.length && predictionsList.map((predictions, index) =>
+                        <div className="mt-2" style={{minHeight: "60vh"}} key={predictions.toString()}>
+                            <Row>
+                                {(pendingApiCall || (!pendingApiCall && !uploadedImageUrls.length && !uploadedImageUrls[index].length) || error) &&
+                                <Col className="col-12 d-flex flex-wrap align-items-center" style={{minHeight: "56vh"}}>
+                                    {/*{pendingApiCall && !error && <div className="text-center mx-auto"><Spinner>*/}
+                                    {/*    Loading...*/}
+                                    {/*</Spinner></div>}*/}
+                                    {!pendingApiCall && !uploadedImageUrls.length &&  !uploadedImageUrls[index].length &&!error &&
+                                    <div className="text-muted text-center mx-auto">
+                                        Here you will see the predictions
+                                    </div>}
+                                    {error && <div className="text-danger text-center mx-auto">
+                                        {error}
+                                    </div>}
+                                </Col>}
 
-                            <Col className="align-self-center mb-3">
-                                {predictions.length > 0 && <div>
-                                    <h4><p>Predictions:</p></h4>
-                                    <li className="text-danger">Human
-                                        found {predictions.filter(p => p.tagName === 'Human' && p.probability > minProbability).length} times
-                                    </li>
-                                    <li className="text-primary">Dog
-                                        found {predictions.filter(p => p.tagName === 'Dog' && p.probability > minProbability).length} times
-                                    </li>
-                                </div>}
-                            </Col>
-                            {(uploadedImageUrl && predictions.length > 0) && <Row>
-                                <Col style={{minHeight: "56vh"}}>
-                                    {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
-                                    <Canvas uploadedImageUrl={uploadedImageUrl} predictions={predictions} width="700"
-                                            height="700" minProbability={minProbability}/>
+                                <Col className="align-self-center mb-3">
+                                    {predictions.length > 0 && <div>
+                                        <h4><p>Predictions:</p></h4>
+                                        <li className="text-danger">Human
+                                            found {predictions.filter(p => p.tagName === 'Human' && p.probability > minProbability).length} times
+                                        </li>
+                                        <li className="text-primary">Dog
+                                            found {predictions.filter(p => p.tagName === 'Dog' && p.probability > minProbability).length} times
+                                        </li>
+                                    </div>}
                                 </Col>
-                            </Row>}
-                        </Row>
-                    </div>
+                                {(uploadedImageUrls[index]) && <Row>
+                                    <Col style={{minHeight: "56vh"}}>
+                                        {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
+                                        <Canvas uploadedImageUrl={uploadedImageUrls[index]} predictions={predictions} width="700"
+                                                height="700" minProbability={minProbability}/>
+                                    </Col>
+                                </Row>}
+                            </Row>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
