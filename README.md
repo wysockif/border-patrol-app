@@ -18,7 +18,7 @@ https://border-app.azurewebsites.net
 
 ## General Information
 
-![Screen1](img/Screen2.png)
+![Screen1](img/Screen1.png)
 
 Border patrol app is a web application which enables users to upload photos from cameras and then checks if there are people located on these photos. Users need to pass the authorization process and log in to the app to be able to use it. By doing this project we wanted to address a very recent problem of authorized crossing borders. It could be used as a system helping guards on borders to keep track of the eare around the border. It can be especially useful at night when there is a worse visibility for a human eye.
 
@@ -28,7 +28,7 @@ Tha app was created as a project no. 3 for a class "Introduction to applications
 
 ## Used Dataset
 
-Dataset has examples of night and termal photos taken with border violators, as well as dogs. 
+Dataset has examples of night and termal photos taken with border violators, as well as dogs.
 
 ---
 
@@ -83,9 +83,13 @@ Demo do zrobienia
 
 ## Screenshots
 
-- Przykładowe działanie:
+- Detakcja człowieka:
 
-![Screen2](img/Screen1.png)
+![Screen2](img/Screen2.png)
+
+- Detekcja psa:
+
+![Screen3](img/Screen3.png)
 
 ---
 
