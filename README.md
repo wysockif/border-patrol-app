@@ -39,6 +39,7 @@ Ktoś coś o datasecie
 - `Azure Web Services`
 - `React.js 17.0.2`
 - `Azure Logic App`
+- `Azure SQL Database`
 
 ---
 
@@ -49,6 +50,7 @@ Ktoś coś o datasecie
 - Implementation of a frontend application using `React.js`.
 - Connecting trained model with a frontend application using `REST API` and `Azure Storage`.
 - Deployment of application using `Azure Web Services`.
+- Design `Logic Diagram`.
 - Connection of the app with `Azure Logic App`.
 
 ## Architecture Diagram
@@ -67,6 +69,7 @@ Diagram do zrobienia
 6. `Custom Vision API` returns predictions (detections) of people on the photo.
 7. The web application shows a photo to a user with located people and probabilities.
 8. User can adjust a threshold to make detections more or less accurate.
+9. If threshold is above particular level system send mail to border controllers.
 
 ---
 
