@@ -28,7 +28,7 @@ Tha app was created as a project no. 3 for a class "Introduction to applications
 
 ## Used Dataset
 
-Ktoś coś o datasecie
+Dataset has examples of night and termal photos taken with border violators, as well as dogs. 
 
 ---
 
