@@ -77,7 +77,7 @@ Diagram do zrobienia
 
 See a demo (in polish):
 
-Demo do zrobienia
+[Demo](https://youtu.be/QR7h-0d3D8o)
 
 ---
 
