@@ -28,6 +28,7 @@ Tha app was created as a project no. 3 for a class "Introduction to applications
 
 ## Used Dataset
 
+[Thermal Dogs and People Object Detection Dataset](https://public.roboflow.com/object-detection/thermal-dogs-and-people/1/download/multiclass)
 Dataset has examples of night and termal photos taken with border violators, as well as dogs.
 
 ---
