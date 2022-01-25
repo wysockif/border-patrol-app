@@ -54,10 +54,6 @@ Dataset has examples of night and termal photos taken with border violators, as 
 - Design `Logic Diagram`.
 - Connection of the app with `Azure Logic App`.
 
-## Architecture Diagram
-
-Diagram do zrobienia
-
 ---
 
 ## How does it work
