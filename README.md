@@ -84,7 +84,7 @@ See a demo (in polish):
 
 ## Screenshots
 
-- Detakcja człowieka:
+- Detekcja człowieka:
 
 ![Screen2](img/Screen2.png)
 
