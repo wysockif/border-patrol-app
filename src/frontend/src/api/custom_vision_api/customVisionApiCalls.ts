@@ -9,7 +9,11 @@ export function getPredictions(imageUrl: string) {
 
 export function sendHttpRequest(prediction: Prediction) {
     axios.defaults.headers.post['Content-Type'] = 'application/json';
-    return axios.post(config.LogicAppApi.Url, JSON.stringify(prediction));
+    return axios.post(config.LogicAppApi.Url, JSON.stringify(prediction), {
+        Headers: {
+            'Content-Type': 'application/json'
+        }
+    });
 }
 
 export interface BoundingBox {
