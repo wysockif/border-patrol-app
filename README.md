@@ -80,6 +80,10 @@ Demo do zrobienia
 
 ## Screenshots
 
+- Przykładowe działanie:
+
+![Screen2](img/Screen2.png)
+
 ---
 
 ## Team
